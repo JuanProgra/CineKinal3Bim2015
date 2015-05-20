@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:padding="10dp" >
+
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_width="78dp"
+        android:layout_height="76dp"
+        android:gravity="center_vertical"
+        android:layout_weight="0.04" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0.16"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Titulo"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            android:layout_row="0"
+            android:layout_column="0" />
+
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_row="0"
+            android:gravity="center_vertical"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:gravity="center_vertical"
+            android:text="Descripcion"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            android:layout_row="1" />
+
+        <TextView
+            android:id="@+id/txtDescrip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_row="1"
+            android:gravity="center_vertical"
+            android:textSize="14sp" />
+
+
+    </GridLayout>
+</LinearLayout>

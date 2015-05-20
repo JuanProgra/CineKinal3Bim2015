@@ -23,6 +23,7 @@
         <activity
             android:name=".clsRegistro"
             android:label="@string/title_activity_cls_registro" >
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".clsLogin"/>
         </activity>
     </application>
 

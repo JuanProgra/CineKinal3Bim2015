@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -54,8 +55,9 @@ public class clsRegistro extends ActionBarActivity {
 
     private void setupDrawer() {
         mToolbar = (Toolbar) findViewById(R.id.app_bar);
-
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -76,6 +78,9 @@ public class clsRegistro extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.home){
+            NavUtils.navigateUpFromSameTask(this);
         }
 
         return super.onOptionsItemSelected(item);
@@ -99,7 +104,7 @@ public class clsRegistro extends ActionBarActivity {
                         if (cc.moveToFirst())
                         {
                             do {
-                               valida++;
+                                valida++;
                             } while (cc.moveToNext());
                         }
                         db.close();
@@ -126,7 +131,12 @@ public class clsRegistro extends ActionBarActivity {
                                 Toast toast = Toast.makeText(getApplicationContext(),"3)" + e.toString(), Toast.LENGTH_SHORT);
                                 toast.show();
                             }
+                        }else
+                        {
+                            Toast toast = Toast.makeText(getApplicationContext(),"El nombre de usuario ya existe", Toast.LENGTH_SHORT);
+                            toast.show();
                         }
+
                     }else{
                         Toast toast = Toast.makeText(getApplicationContext(),"Las contraseñas no son inguales", Toast.LENGTH_SHORT);
                         toast.show();

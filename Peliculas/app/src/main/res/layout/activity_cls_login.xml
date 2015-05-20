@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context="gt.com.kinal.juanlopez.peliculas.clsLogin">
 
 
@@ -77,11 +78,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_margin="5dp"
-                    android:background="#00BCD4"
+                    android:background="#FFFFFF"
                     android:padding="5dp"
                     android:text="@string/Regis"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
+                    android:textColor="#00BCD4"
+                    android:textSize="10sp" />
 
             </LinearLayout>
 
