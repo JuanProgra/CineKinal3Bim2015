@@ -14,13 +14,16 @@ public class BDD_sqlite extends SQLiteOpenHelper {
 
     public BDD_sqlite(Context ctx)
     {
-        super(ctx, "Peliculas", factory, 1);
+        super(ctx, "Peliculas", factory, 2);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db)
     {
         String query = "CREATE TABLE USUARIOS(USUARIO TEXT,PASSWORD TEXT,ESTADO TEXT);";
+        db.execSQL(query);
+
+        query = "CREATE TABLE PELICULA(TITULO TEXT,DESCRIPCION TEXT, IMG TEXT,ESTADO TEXT);";
         db.execSQL(query);
 
     }
@@ -30,6 +33,7 @@ public class BDD_sqlite extends SQLiteOpenHelper {
         //Se elimina la version anterior de la tabla
 
         db.execSQL("DROP TABLE IF EXISTS USUARIOS");
+        db.execSQL("DROP TABLE IF EXISTS PELICULA");
         //Se crea la nueva version de la tabla
         onCreate(db);
     }

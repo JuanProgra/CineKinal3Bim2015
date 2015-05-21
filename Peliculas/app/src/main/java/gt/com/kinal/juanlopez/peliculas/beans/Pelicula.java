@@ -7,6 +7,7 @@ public class Pelicula {
     public String Titulo;
     public String Descripcion;
     public int Img;
+    public String Estado;
 
     public String getTitulo() {
         return Titulo;
@@ -30,5 +31,13 @@ public class Pelicula {
 
     public void setImg(int img) {
         Img = img;
+    }
+
+    public String getEstado() {
+        return Estado;
+    }
+
+    public void setEstado(String estado) {
+        Estado = estado;
     }
 }
