@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/imgIcon"
         android:layout_width="78dp"
-        android:layout_height="76dp"
+        android:layout_height="85dp"
         android:gravity="center_vertical"
         android:layout_weight="0.04" />
 
@@ -19,6 +19,7 @@
         android:orientation="vertical" >
 
         <TextView
+
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"

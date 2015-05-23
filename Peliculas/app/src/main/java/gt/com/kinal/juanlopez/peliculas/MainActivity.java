@@ -1,6 +1,8 @@
 package gt.com.kinal.juanlopez.peliculas;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -10,13 +12,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -37,7 +43,7 @@ import gt.com.kinal.juanlopez.peliculas.beans.Pelicula;
 import gt.com.kinal.juanlopez.peliculas.beans.Usuario;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
     public String user;
 
@@ -67,15 +73,19 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        lista = (ListView) findViewById(R.id.listView);
+        lista1 = (ListView) findViewById(R.id.listView2);
+
         llenarPeliculas();
         user = "";
         setupDrawer();
         Login();
         llenarLista();
         llenarLista2();
+
     }
 
-    public void llenarPeliculas(){
+    public void llenarPeliculas() {
         try {
             sqlite = new BDD_sqlite(getBaseContext());
             db = sqlite.getReadableDatabase();
@@ -89,7 +99,7 @@ public class MainActivity extends ActionBarActivity {
             db = sqlite.getReadableDatabase();
 
             peliculaConte.put("TITULO", "Los Vengadores");
-            peliculaConte.put("DESCRIPCION", "Cuando Tony Stark intenta reactivar ...");
+            peliculaConte.put("DESCRIPCION", "Cuando Tony Stark intenta reactivar un programa sin uso que tiene como objetivo de mantener la paz, las cosas comienzan a torcerse y los héroes más poderosos de la Tierra, incluyendo a Iron Man, Capitán América, Thor, El Increíble Hulk, Viuda Negra y Ojo de Halcón, se verán ante su prueba definitiva cuando el destino del planeta se ponga en juego. Cuando el villano Ultron emerge, le corresponderá a Los Vengadores detener sus terribles planes, que junto a incómodas alianzas llevarán a una inesperada acción que allanará el camino para una épica y única aventura.");
             peliculaConte.put("ESTADO", "1");
 
             db.insert("PELICULA", null, peliculaConte);
@@ -97,8 +107,8 @@ public class MainActivity extends ActionBarActivity {
 
             db = sqlite.getReadableDatabase();
 
-            peliculaConte.put("TITULO", "Zapatero a tus zapatos");
-            peliculaConte.put("DESCRIPCION", "Cuenta la historia de un zapatero que ...");
+            peliculaConte.put("TITULO", "Clown: El Payaso del mal");
+            peliculaConte.put("DESCRIPCION", "Un padre decide compra un traje de payaso para animar a su hijo en su sexto cumpleaños. Tras la fiesta se da cuenta de que es incapaz de quitárselo y su personalidad comienza a sufrir terroríficos cambios. Él y su familia deberán intentar quitárselo en una carrera contra el tiempo para terminar con la maldición, antes de que se complete la transformación y se convierta en un homicida con zapatos muy grandes.");
             peliculaConte.put("ESTADO", "1");
 
             db.insert("PELICULA", null, peliculaConte);
@@ -107,8 +117,8 @@ public class MainActivity extends ActionBarActivity {
             db = sqlite.getReadableDatabase();
 
             peliculaConte.put("TITULO", "Tomorrowland: El Mundo del mañana");
-            peliculaConte.put("DESCRIPCION", "Unidos por el mismo destino, un adolescente");
-            peliculaConte.put("ESTADO", "0");
+            peliculaConte.put("DESCRIPCION", "Unidos por el mismo destino, un adolescente inteligente y optimista lleno de curiosidad científica y un antiguo niño prodigio inventor hastiado por las desilusiones se embarcan en una peligrosa misión para desenterrar los secretos de un enigmático lugar localizado en algún lugar del tiempo y el espacio conocido en la memoria colectiva como “Tomorrowland”");
+            peliculaConte.put("ESTADO", "1");
 
             db.insert("PELICULA", null, peliculaConte);
             db.close();
@@ -116,12 +126,12 @@ public class MainActivity extends ActionBarActivity {
             db = sqlite.getReadableDatabase();
 
             peliculaConte.put("TITULO", "Heroe de Centro Comercial 2");
-            peliculaConte.put("DESCRIPCION", "Kevin James vuelve a interpretar a Paul Blart ...");
-            peliculaConte.put("ESTADO", "0");
+            peliculaConte.put("DESCRIPCION", "Kevin James vuelve a interpretar a Paul Blart, el guardia de seguridad que en esta ocasión se dirige a Las Vegas para atender una Exposición sobre su ramo de trabajo y aprovechará para llevarse a su hija Maya (Raini Rodriguez) para pasar tiempo juntos antes de que ella se vaya a estudiar fuera. Mientras está en la convención, Paul sin darse cuenta descubre que se lleva a cabo un atraco, así que como buen héroe, deberá detener a los criminales.");
+            peliculaConte.put("ESTADO", "1");
 
             db.insert("PELICULA", null, peliculaConte);
             db.close();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             db.close();
             String message = e.toString();
             Toast.makeText(this, "0)" + message, Toast.LENGTH_LONG).show();
@@ -131,9 +141,6 @@ public class MainActivity extends ActionBarActivity {
 
     private void setupDrawer() {
         re = getResources();
-
-        lista = (ListView)findViewById(R.id.listView);
-        lista1 = (ListView)findViewById(R.id.listView2);
 
         mToolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
@@ -154,9 +161,14 @@ public class MainActivity extends ActionBarActivity {
         tabHost.addTab(tabSpec);
 
         tabHost.setCurrentTab(0);
+
+
     }
 
-    public void llenarLista(){
+    public void llenarLista() {
+        listaPelicula.clear();
+        listBackupDatas.clear();
+
         sqlite = new BDD_sqlite(getBaseContext());
         db = sqlite.getReadableDatabase();
 
@@ -171,7 +183,7 @@ public class MainActivity extends ActionBarActivity {
                 obj = new Pelicula();
                 obj.setImg(R.drawable.ic_launcher);
                 obj.setTitulo(cc.getString(0));
-                obj.setDescripcion(cc.getString(1).substring(0,30)+"...");
+                obj.setDescripcion(cc.getString(1).substring(0, 30) + "...");
 
                 listaPelicula.add(obj);
                 listBackupDatas.add(obj);
@@ -180,11 +192,13 @@ public class MainActivity extends ActionBarActivity {
         }
         adapter = new PeliculasAdapter();
         lista.setAdapter(adapter);
-        lista.setTextFilterEnabled(true);
         adapter.notifyDataSetChanged();
     }
 
-    public void llenarLista2(){
+    public void llenarLista2() {
+        listaPelicula2.clear();
+        listBackupDatas2.clear();
+
         sqlite = new BDD_sqlite(getBaseContext());
         db = sqlite.getReadableDatabase();
 
@@ -199,7 +213,7 @@ public class MainActivity extends ActionBarActivity {
                 obj = new Pelicula();
                 obj.setImg(R.drawable.ic_launcher);
                 obj.setTitulo(cc.getString(0));
-                obj.setDescripcion(cc.getString(1).substring(0,30)+"...");
+                obj.setDescripcion(cc.getString(1).substring(0, 30) + "...");
 
                 listaPelicula2.add(obj);
                 listBackupDatas2.add(obj);
@@ -208,7 +222,6 @@ public class MainActivity extends ActionBarActivity {
         }
         adapter2 = new PeliculasAdapter2();
         lista1.setAdapter(adapter2);
-        lista1.setTextFilterEnabled(true);
         adapter.notifyDataSetChanged();
     }
 
@@ -328,9 +341,63 @@ public class MainActivity extends ActionBarActivity {
             holder.Descript.setText(getItem(position).Descripcion);
             holder.Descript.setTextColor(R.color.secondary_text);
             holder.thumb.setImageResource(getItem(position).getImg());
+
+            holder.Titulo.setTag(position);
+
+
+            holder.Titulo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int pos = (Integer) v.getTag();
+
+                    String cat_ID   = listaPelicula.get(pos).getTitulo();
+
+                    Aler(cat_ID);
+                }
+            });
             return convertView;
+
         }
 
+    }
+    public void Aler (String titulo) {
+
+        final String ti = titulo;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(titulo);
+
+        builder.setMessage(titulo);
+
+        builder.setPositiveButton("Agregar favoritos", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sqlite = new BDD_sqlite(getBaseContext());
+                db = sqlite.getReadableDatabase();
+
+                String sql1 = "UPDATE PELICULA SET ESTADO='0' WHERE TITULO='"+ti+"'";
+                db.execSQL(sql1);
+                db.close();
+
+                llenarLista();
+                llenarLista2();
+            }
+        });
+
+        builder.setNegativeButton("Detalles", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent iMod = new Intent(MainActivity.this, clsDetalleP.class);
+                iMod.putExtra("titulo", ti);
+                startActivity(iMod);
+                finish();
+            }
+        });
+        builder.show();
     }
 
     private class PeliculaFilter extends Filter {
@@ -379,6 +446,7 @@ public class MainActivity extends ActionBarActivity {
             }
         }
     }
+
     private class PeliculasAdapter2 extends BaseAdapter implements
             Filterable {
         private PeliculaFilter2 peliculaFilter2;
@@ -427,6 +495,7 @@ public class MainActivity extends ActionBarActivity {
             holder.Descript.setText(getItem(position).Descripcion);
             holder.Descript.setTextColor(R.color.secondary_text);
             holder.thumb.setImageResource(getItem(position).getImg());
+
             return convertView;
         }
 
@@ -484,6 +553,14 @@ public class MainActivity extends ActionBarActivity {
         public TextView Titulo;
         public TextView Descript;
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+                            long id) {
+
+    }
+
+
 
 }
 

@@ -10,5 +10,6 @@
     <string name="title_activity_cls_login">Login</string>
     <string name="title_activity_cls_registro">Registarse</string>
     <string name="Regis">Registrarse</string>
+    <string name="title_activity_cls_detalle_p">Detalles</string>
 
 </resources>

@@ -52,7 +52,7 @@ public class clsLogin extends ActionBarActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(clsLogin.this, clsRegistro.class);
                 startActivity(intent);
-
+                finish();
             }
         });
 
