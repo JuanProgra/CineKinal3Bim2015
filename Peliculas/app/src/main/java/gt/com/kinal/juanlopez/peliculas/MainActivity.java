@@ -10,13 +10,14 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MenuInflater;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -38,6 +39,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 
+import gt.com.kinal.juanlopez.peliculas.Adapter.NavigationDrawerAdapter;
 import gt.com.kinal.juanlopez.peliculas.BaseDatos.BDD_sqlite;
 import gt.com.kinal.juanlopez.peliculas.beans.Pelicula;
 import gt.com.kinal.juanlopez.peliculas.beans.Usuario;
@@ -144,6 +146,11 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
         mToolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragmnet);
+
+        drawerFragment.setUp((DrawerLayout)findViewById(R.id.drawer_layout), mToolbar);
 
         tabHost = (TabHost) findViewById(android.R.id.tabhost);
         tabHost.setup();
@@ -351,7 +358,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
                     int pos = (Integer) v.getTag();
 
-                    String cat_ID   = listaPelicula.get(pos).getTitulo();
+                    String cat_ID = listaPelicula.get(pos).getTitulo();
 
                     Aler(cat_ID);
                 }
@@ -361,7 +368,8 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         }
 
     }
-    public void Aler (String titulo) {
+
+    public void Aler(String titulo) {
 
         final String ti = titulo;
 
@@ -378,7 +386,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                 sqlite = new BDD_sqlite(getBaseContext());
                 db = sqlite.getReadableDatabase();
 
-                String sql1 = "UPDATE PELICULA SET ESTADO='0' WHERE TITULO='"+ti+"'";
+                String sql1 = "UPDATE PELICULA SET ESTADO='0' WHERE TITULO='" + ti + "'";
                 db.execSQL(sql1);
                 db.close();
 
@@ -559,7 +567,6 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                             long id) {
 
     }
-
 
 
 }

@@ -14,13 +14,13 @@ public class BDD_sqlite extends SQLiteOpenHelper {
 
     public BDD_sqlite(Context ctx)
     {
-        super(ctx, "Peliculas", factory, 2);
+        super(ctx, "Peliculas", factory, 4);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        String query = "CREATE TABLE USUARIOS(USUARIO TEXT,PASSWORD TEXT,ESTADO TEXT);";
+        String query = "CREATE TABLE USUARIOS(USUARIO TEXT,PASSWORD TEXT,ESTADO TEXT,NOMBRE TEXT, CORREO TEXT);";
         db.execSQL(query);
 
         query = "CREATE TABLE PELICULA(TITULO TEXT,DESCRIPCION TEXT, IMG TEXT,ESTADO TEXT);";

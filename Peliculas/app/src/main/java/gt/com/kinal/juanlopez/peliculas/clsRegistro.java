@@ -27,6 +27,8 @@ public class clsRegistro extends ActionBarActivity {
     private EditText edtUsuario;
     private EditText edtPassword;
     private EditText edtPasswordC;
+    private EditText edtNombre;
+    private EditText edtEmail;
 
     private Button btnRegistro;
 
@@ -42,7 +44,11 @@ public class clsRegistro extends ActionBarActivity {
         edtUsuario = (EditText)findViewById(R.id.edtUser);
         edtPassword = (EditText)findViewById(R.id.edtPassword);
         edtPasswordC = (EditText)findViewById(R.id.edtPasswordC);
+        edtNombre = (EditText)findViewById(R.id.edtNombre);
+        edtEmail = (EditText)findViewById(R.id.edtEmail);
+
         btnRegistro = (Button)findViewById(R.id.btnRegist);
+
 
         btnRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +124,8 @@ public class clsRegistro extends ActionBarActivity {
 
                                 usuarioConte.put("USUARIO", edtUsuario.getText().toString());
                                 usuarioConte.put("PASSWORD", edtPassword.getText().toString());
+                                usuarioConte.put("NOMBRE", edtNombre.getText().toString());
+                                usuarioConte.put("CORREO", edtEmail.getText().toString());
                                 usuarioConte.put("ESTADO", "1");
 
                                 db.insert("USUARIOS", null, usuarioConte);

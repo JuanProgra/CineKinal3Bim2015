@@ -2,6 +2,7 @@ package gt.com.kinal.juanlopez.peliculas;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import gt.com.kinal.juanlopez.peliculas.Adapter.NavigationDrawerAdapter;
 import gt.com.kinal.juanlopez.peliculas.BaseDatos.BDD_sqlite;
 import gt.com.kinal.juanlopez.peliculas.beans.Pelicula;
 
@@ -31,17 +33,20 @@ public class clsDetalleP extends ActionBarActivity {
 
         setupDrawer();
 
-        textTitulo = (TextView)findViewById(R.id.txtTitulo);
-        textDescrip = (TextView)findViewById(R.id.txtDescrip);
+        textTitulo = (TextView) findViewById(R.id.txtTitulo);
+        textDescrip = (TextView) findViewById(R.id.txtDescrip);
 
         Bundle bun = getIntent().getExtras();
-        titulo= bun.getString("titulo");
+        titulo = bun.getString("titulo");
 
         llenarLista(titulo);
+
+
     }
     private void setupDrawer() {
         mToolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
     public void llenarLista(String titulo2) {
 
