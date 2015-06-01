@@ -13,6 +13,7 @@ import gt.com.kinal.juanlopez.peliculas.R;
  * Created by Godinez Miranda on 28/05/2015.
  */
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> {
+
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 

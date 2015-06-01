@@ -10,6 +10,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -29,6 +32,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +49,7 @@ import gt.com.kinal.juanlopez.peliculas.beans.Pelicula;
 import gt.com.kinal.juanlopez.peliculas.beans.Usuario;
 
 
-public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener,NavigationDrawerFragment.FragmentDrawerListener {
 
     public String user;
 
@@ -150,7 +154,8 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
         NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragmnet);
 
-        drawerFragment.setUp((DrawerLayout)findViewById(R.id.drawer_layout), mToolbar);
+        drawerFragment.setUp((DrawerLayout)findViewById(R.id.drawer_layout), mToolbar,R.id.navigation_drawer_fragmnet);
+        drawerFragment.setDrawerListener(this);
 
         tabHost = (TabHost) findViewById(android.R.id.tabhost);
         tabHost.setup();
@@ -402,7 +407,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                 Intent iMod = new Intent(MainActivity.this, clsDetalleP.class);
                 iMod.putExtra("titulo", ti);
                 startActivity(iMod);
-                finish();
+
             }
         });
         builder.show();
@@ -567,7 +572,31 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                             long id) {
 
     }
+    @Override
+    public void onDrawerItemSelected(View view, int position) {
+        Fragment fragment = null;
+        String title = getString(R.string.app_name);
+
+        TabHost host = (TabHost) findViewById(android.R.id.tabhost);
+
+        switch (position){
+            case 1:
+                host.setCurrentTab(0);
+                break;
+            case 2:
+                host.setCurrentTab(1);
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            default:
+                break;
+        }
 
 
+    }
 }
 
