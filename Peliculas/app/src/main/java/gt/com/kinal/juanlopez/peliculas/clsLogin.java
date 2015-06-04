@@ -8,10 +8,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View.OnClickListener;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -31,8 +33,12 @@ public class clsLogin extends ActionBarActivity {
     private Button btnLogin;
     private Button btnRegi;
 
+    private String estado;
+
     public SQLiteDatabase db;
     public BDD_sqlite sqlite;
+
+    private CheckBox checkBox;
 
     ArrayList<Usuario> listaUsu = new ArrayList<Usuario>();
 
@@ -41,8 +47,30 @@ public class clsLogin extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cls_login);
 
+        estado = "0";
+
         edtUser = (EditText) findViewById(R.id.edtUserL);
         edtPassword = (EditText) findViewById(R.id.edtPasswordL);
+
+        checkBox = (CheckBox) findViewById(R.id.Recuerdame);
+
+        checkBox.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //is chkIos checked?
+                if (((CheckBox) v).isChecked()) {
+                    estado = "1";
+                    mensaje();
+
+                } else {
+                    estado = "0";
+                    mensajeNo();
+
+                }
+
+            }
+        });
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnRegi = (Button) findViewById(R.id.btnRegisL);
@@ -64,6 +92,14 @@ public class clsLogin extends ActionBarActivity {
         });
 
         setupDrawer();
+    }
+
+    public void mensaje() {
+        Toast.makeText(this, estado, Toast.LENGTH_SHORT).show();
+    }
+
+    public void mensajeNo() {
+        Toast.makeText(this, estado, Toast.LENGTH_SHORT).show();
     }
 
     private void setupDrawer() {
@@ -104,37 +140,47 @@ public class clsLogin extends ActionBarActivity {
         String Sql = "SELECT PASSWORD FROM USUARIOS WHERE USUARIO='" + edtUser.getText().toString() + "'";
 
         Cursor cc = db.rawQuery(Sql, null);
-
+        int valida = 0;
         if (cc.moveToFirst()) {
             do {
                 password = cc.getString(0);
-
+                valida++;
             } while (cc.moveToNext());
         }
         db.close();
 
-        if (password.equals(edtPassword.getText().toString())) {
+        if (edtUser.getText().length() > 0) {
+            if (edtPassword.getText().length() > 0) {
+                if (valida > 0) {
+                    if (password.equals(edtPassword.getText().toString())) {
 
-            sqlite = new BDD_sqlite(getBaseContext());
-            db = sqlite.getReadableDatabase();
-            try {
-                String sql1 = "UPDATE USUARIOS SET ESTADO='1' WHERE USUARIO='"+edtUser.getText().toString()+"'";
-                db.execSQL(sql1);
-                db.close();
+                        sqlite = new BDD_sqlite(getBaseContext());
+                        db = sqlite.getReadableDatabase();
+                        try {
+                            String sql1 = "UPDATE USUARIOS SET ESTADO='1',ESTADOLOG='"+estado+"' WHERE USUARIO='" + edtUser.getText().toString() + "'";
+                            Toast.makeText(this, sql1, Toast.LENGTH_LONG).show();
+                            db.execSQL(sql1);
+                            db.close();
 
-                Intent intent = new Intent(clsLogin.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            } catch (SQLException e) {
-                db.close();
-                String message = e.toString();
-                Toast.makeText(this, "0)" + message, Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(clsLogin.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } catch (SQLException e) {
+                            db.close();
+                            String message = e.toString();
+                            Toast.makeText(this, "0)" + message, Toast.LENGTH_LONG).show();
+                        }
+
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(), "La contraseña no se valida", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Ingrese su contraseña", Toast.LENGTH_LONG).show();
             }
-
         } else {
-            Toast toast = Toast.makeText(getApplicationContext(), "La contraseña no se valida", Toast.LENGTH_SHORT);
-            toast.show();
+            Toast.makeText(this, "Ingrese su nombre de usuario", Toast.LENGTH_LONG).show();
         }
-
     }
 }
