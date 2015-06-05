@@ -38,6 +38,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.annotation.SuppressLint;
 
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -47,9 +49,12 @@ import gt.com.kinal.juanlopez.peliculas.Adapter.NavigationDrawerAdapter;
 import gt.com.kinal.juanlopez.peliculas.BaseDatos.BDD_sqlite;
 import gt.com.kinal.juanlopez.peliculas.beans.Pelicula;
 import gt.com.kinal.juanlopez.peliculas.beans.Usuario;
+import gt.com.kinal.juanlopez.peliculas.fragment.AjustesFragment;
+import gt.com.kinal.juanlopez.peliculas.fragment.FavoritosFragment;
+import gt.com.kinal.juanlopez.peliculas.fragment.PeliculaFragment;
+import gt.com.kinal.juanlopez.peliculas.fragment.PerfilFragment;
 
-
-public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener,NavigationDrawerFragment.FragmentDrawerListener {
+public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, NavigationDrawerFragment.FragmentDrawerListener {
 
     public String user;
 
@@ -65,7 +70,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
     public ListView lista;
     public ListView lista1;
-    public PeliculasAdapter adapter;
+    //public PeliculasAdapter adapter;
 
     public PeliculasAdapter2 adapter2;
 
@@ -79,16 +84,71 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lista = (ListView) findViewById(R.id.listView);
-        lista1 = (ListView) findViewById(R.id.listView2);
-
+        //lista = (ListView) findViewById(R.id.listView);
+        //lista1 = (ListView) findViewById(R.id.listView2);
         llenarPeliculas();
+
         user = "";
         setupDrawer();
         Login();
-        llenarLista();
-        llenarLista2();
+        //
+        //llenarLista2();
 
+        //fab();
+    }
+
+    public void fab() {
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(R.drawable.ic_content_new);
+
+        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+                .setContentView(imageView)
+                .build();
+    }
+
+
+    private void setupDrawer() {
+        re = getResources();
+
+        mToolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragmnet);
+
+        drawerFragment.setUp((DrawerLayout) findViewById(R.id.drawer_layout), mToolbar, R.id.navigation_drawer_fragmnet);
+        drawerFragment.setDrawerListener(this);
+    }
+
+
+    public void llenarLista2() {
+        listaPelicula2.clear();
+        listBackupDatas2.clear();
+
+        sqlite = new BDD_sqlite(getBaseContext());
+        db = sqlite.getReadableDatabase();
+
+        String Sql = "SELECT * FROM PELICULA WHERE ESTADO='0'";
+
+        Cursor cc = db.rawQuery(Sql, null);
+        Pelicula obj;
+
+        if (cc.moveToFirst()) {
+            do {
+
+                obj = new Pelicula();
+                obj.setImg(R.drawable.ic_launcher);
+                obj.setTitulo(cc.getString(0));
+                obj.setDescripcion(cc.getString(1).substring(0, 30) + "...");
+
+                listaPelicula2.add(obj);
+                listBackupDatas2.add(obj);
+
+            } while (cc.moveToNext());
+        }
+        adapter2 = new PeliculasAdapter2();
+        lista1.setAdapter(adapter2);
+        //adapter.notifyDataSetChanged();
     }
 
     public void llenarPeliculas() {
@@ -145,98 +205,6 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
     }
 
-    private void setupDrawer() {
-        re = getResources();
-
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragmnet);
-
-        drawerFragment.setUp((DrawerLayout)findViewById(R.id.drawer_layout), mToolbar,R.id.navigation_drawer_fragmnet);
-        drawerFragment.setDrawerListener(this);
-
-        tabHost = (TabHost) findViewById(android.R.id.tabhost);
-        tabHost.setup();
-
-        TabHost.TabSpec tabSpec = tabHost.newTabSpec("miTab");
-        tabSpec.setContent(R.id.tab1);
-        tabSpec.setIndicator("Destacados", re.getDrawable(android.R.drawable.ic_btn_speak_now));
-
-        tabHost.addTab(tabSpec);
-
-        tabSpec = tabHost.newTabSpec("miTab2");
-        tabSpec.setContent(R.id.tab2);
-        tabSpec.setIndicator("Favoritos", re.getDrawable(android.R.drawable.ic_dialog_email));
-
-        tabHost.addTab(tabSpec);
-
-        tabHost.setCurrentTab(0);
-
-
-    }
-
-    public void llenarLista() {
-        listaPelicula.clear();
-        listBackupDatas.clear();
-
-        sqlite = new BDD_sqlite(getBaseContext());
-        db = sqlite.getReadableDatabase();
-
-        String Sql = "SELECT * FROM PELICULA WHERE ESTADO='1'";
-
-        Cursor cc = db.rawQuery(Sql, null);
-        Pelicula obj;
-
-        if (cc.moveToFirst()) {
-            do {
-
-                obj = new Pelicula();
-                obj.setImg(R.drawable.ic_launcher);
-                obj.setTitulo(cc.getString(0));
-                obj.setDescripcion(cc.getString(1).substring(0, 30) + "...");
-
-                listaPelicula.add(obj);
-                listBackupDatas.add(obj);
-
-            } while (cc.moveToNext());
-        }
-        adapter = new PeliculasAdapter();
-        lista.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
-    public void llenarLista2() {
-        listaPelicula2.clear();
-        listBackupDatas2.clear();
-
-        sqlite = new BDD_sqlite(getBaseContext());
-        db = sqlite.getReadableDatabase();
-
-        String Sql = "SELECT * FROM PELICULA WHERE ESTADO='0'";
-
-        Cursor cc = db.rawQuery(Sql, null);
-        Pelicula obj;
-
-        if (cc.moveToFirst()) {
-            do {
-
-                obj = new Pelicula();
-                obj.setImg(R.drawable.ic_launcher);
-                obj.setTitulo(cc.getString(0));
-                obj.setDescripcion(cc.getString(1).substring(0, 30) + "...");
-
-                listaPelicula2.add(obj);
-                listBackupDatas2.add(obj);
-
-            } while (cc.moveToNext());
-        }
-        adapter2 = new PeliculasAdapter2();
-        lista1.setAdapter(adapter2);
-        adapter.notifyDataSetChanged();
-    }
-
     public void Login() {
 
         sqlite = new BDD_sqlite(getBaseContext());
@@ -246,6 +214,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
         Cursor cc = db.rawQuery(Sql, null);
         Usuario obj;
+
         int valida = 0;
         if (cc.moveToFirst()) {
             do {
@@ -305,160 +274,6 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         return super.onOptionsItemSelected(item);
     }
 
-    private class PeliculasAdapter extends BaseAdapter implements
-            Filterable {
-        private PeliculaFilter peliculaFilter;
-
-        @Override
-        public int getCount() {
-            return listaPelicula.size();
-        }
-
-        @Override
-        public Filter getFilter() {
-            if (peliculaFilter == null)
-                peliculaFilter = new PeliculaFilter();
-            return peliculaFilter;
-        }
-
-        @Override
-        public Pelicula getItem(int position) {
-            return listaPelicula.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            PlayerViewHolder holder;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(
-                        getApplicationContext()).inflate(
-                        R.layout.frm_lista, null);
-                holder = new PlayerViewHolder();
-
-                holder.Titulo = (TextView) convertView.findViewById(R.id.txtTitulo);
-                holder.Descript = (TextView) convertView.findViewById(R.id.txtDescrip);
-                holder.thumb = (ImageView) convertView.findViewById(R.id.imgIcon);
-
-                convertView.setTag(holder);
-            } else {
-                holder = (PlayerViewHolder) convertView.getTag();
-            }
-            holder.Titulo.setTextColor(R.color.secondary_text);
-            holder.Titulo.setText(getItem(position).Titulo);
-            holder.Descript.setText(getItem(position).Descripcion);
-            holder.Descript.setTextColor(R.color.secondary_text);
-            holder.thumb.setImageResource(getItem(position).getImg());
-
-            holder.Titulo.setTag(position);
-
-
-            holder.Titulo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    int pos = (Integer) v.getTag();
-
-                    String cat_ID = listaPelicula.get(pos).getTitulo();
-
-                    Aler(cat_ID);
-                }
-            });
-            return convertView;
-
-        }
-
-    }
-
-    public void Aler(String titulo) {
-
-        final String ti = titulo;
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle(titulo);
-
-        builder.setMessage(titulo);
-
-        builder.setPositiveButton("Agregar favoritos", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                sqlite = new BDD_sqlite(getBaseContext());
-                db = sqlite.getReadableDatabase();
-
-                String sql1 = "UPDATE PELICULA SET ESTADO='0' WHERE TITULO='" + ti + "'";
-                db.execSQL(sql1);
-                db.close();
-
-                llenarLista();
-                llenarLista2();
-            }
-        });
-
-        builder.setNegativeButton("Detalles", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent iMod = new Intent(MainActivity.this, clsDetalleP.class);
-                iMod.putExtra("titulo", ti);
-                startActivity(iMod);
-
-            }
-        });
-        builder.show();
-    }
-
-    private class PeliculaFilter extends Filter {
-        @SuppressLint("DefaultLocale")
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults results = new FilterResults();
-            // 	We implement here the filter logic
-            ArrayList<Pelicula> filters = new ArrayList<Pelicula>();
-            if (constraint == null || constraint.length() == 0) {
-                // 	No filter implemented we return all the list
-                for (Pelicula player : listBackupDatas) {
-                    filters.add(player);
-                }
-                results.values = filters;
-                results.count = filters.size();
-            } else {
-                //We perform filtering operation
-                for (Pelicula row : listBackupDatas) {
-                    if (row.Titulo.toUpperCase().startsWith(
-                            constraint.toString().toUpperCase())) {
-                        filters.add(row);
-                    }
-                }
-                results.values = filters;
-                results.count = filters.size();
-            }
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint,
-                                      FilterResults results) {
-            if (results.count == 0) {
-                listaPelicula.clear();
-                adapter.notifyDataSetInvalidated();
-            } else {
-                listaPelicula.clear();
-                @SuppressWarnings("unchecked")
-                ArrayList<Pelicula> resultList = (ArrayList<Pelicula>) results.values;
-                for (Pelicula row : resultList) {
-                    listaPelicula.add(row);
-                    adapter.notifyDataSetChanged();
-                }
-                adapter.notifyDataSetChanged();
-            }
-        }
-    }
 
     private class PeliculasAdapter2 extends BaseAdapter implements
             Filterable {
@@ -547,16 +362,16 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                                       FilterResults results) {
             if (results.count == 0) {
                 listaPelicula2.clear();
-                adapter.notifyDataSetInvalidated();
+                //adapter.notifyDataSetInvalidated();
             } else {
                 listaPelicula2.clear();
                 @SuppressWarnings("unchecked")
                 ArrayList<Pelicula> resultList = (ArrayList<Pelicula>) results.values;
                 for (Pelicula row : resultList) {
                     listaPelicula2.add(row);
-                    adapter.notifyDataSetChanged();
+                    //adapter.notifyDataSetChanged();
                 }
-                adapter.notifyDataSetChanged();
+                //adapter.notifyDataSetChanged();
             }
         }
     }
@@ -572,28 +387,41 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                             long id) {
 
     }
+
     @Override
     public void onDrawerItemSelected(View view, int position) {
         Fragment fragment = null;
         String title = getString(R.string.app_name);
 
-        TabHost host = (TabHost) findViewById(android.R.id.tabhost);
 
-        switch (position){
+        switch (position) {
             case 1:
-                host.setCurrentTab(0);
+                fragment = new PeliculaFragment();
+                title = "Peliculas";
                 break;
             case 2:
-                host.setCurrentTab(1);
+                fragment = new FavoritosFragment();
+                title = "Favoritos";
                 break;
             case 3:
-
+                fragment = new AjustesFragment();
+                title = "Ajustes";
                 break;
             case 4:
-
+                fragment = new PerfilFragment();
+                title = "Perfil";
                 break;
             default:
                 break;
+        }
+        if (fragment != null) {
+            ((RelativeLayout) findViewById(R.id.ContainerLayout)).removeAllViewsInLayout();
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.ContainerLayout, fragment);
+            fragmentTransaction.commit();
+            getSupportActionBar().setTitle(title);
         }
 
 

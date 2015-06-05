@@ -36,8 +36,8 @@ public class NavigationDrawerFragment extends Fragment {
     private FragmentDrawerListener mDrawerListener;
     private View containerView;
 
-    private int ICONS[] = {R.drawable.ic_home, R.drawable.ic_events, R.drawable.ic_mail, R.drawable.ic_shop, R.drawable.ic_travel };
-    private String TITLES[] = {"Peliculas", "Favoritos","Horario", "Ajustes", "Travel"};
+    private int ICONS[] = {R.drawable.ic_home, R.drawable.ic_events, R.drawable.ic_mail, R.mipmap.ic_profile };
+    private String TITLES[] = {"Peliculas", "Favoritos","Ajustes", "Perfil"};
     private String NAME = "Angel Chanquin";
     private String EMAIL = "angelchanquin@kinal.org.gt";
     private int PROFILE = R.mipmap.ic_profile;
