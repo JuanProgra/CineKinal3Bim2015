@@ -1,10 +1,75 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="gt.com.kinal.juanlopez.peliculas.fragment.PerfilFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="Perfil" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edtUsuarioPer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:drawableLeft="@drawable/usuario_png"
+            android:ems="10"
+            android:hint="Usuario"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/edtCorreoPer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:drawableLeft="@drawable/usuario_png"
+            android:ems="10"
+            android:hint="Correo"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/edtPasswordPer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:drawableLeft="@drawable/candado"
+            android:ems="10"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:enabled="false" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+
+        <EditText
+            android:id="@+id/edtPasswordAntPer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:drawableLeft="@drawable/candado"
+            android:ems="10"
+            android:hint="Contraseña anterior"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/edtPasswordNewPer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:drawableLeft="@drawable/candado"
+            android:ems="10"
+            android:hint="Nueva contraseña"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/btnModifPer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Modificar"/>
+    </LinearLayout>
 
 </FrameLayout>

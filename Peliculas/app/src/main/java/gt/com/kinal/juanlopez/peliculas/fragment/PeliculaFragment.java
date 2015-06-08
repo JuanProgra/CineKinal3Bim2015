@@ -140,7 +140,6 @@ public class PeliculaFragment extends Fragment {
             holder.thumb.setImageResource(getItem(position).getImg());
 
             holder.Titulo.setTag(position);
-
             holder.Titulo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -149,6 +148,27 @@ public class PeliculaFragment extends Fragment {
                     Aler(cat_ID);
                 }
             });
+
+            holder.Descript.setTag(position);
+            holder.Descript.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = (Integer) v.getTag();
+                    String cat_ID = listaPelicula.get(pos).getTitulo();
+                    Aler(cat_ID);
+                }
+            });
+
+            holder.thumb.setTag(position);
+            holder.thumb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = (Integer) v.getTag();
+                    String cat_ID = listaPelicula.get(pos).getTitulo();
+                    Aler(cat_ID);
+                }
+            });
+
             return convertView;
         }
     }

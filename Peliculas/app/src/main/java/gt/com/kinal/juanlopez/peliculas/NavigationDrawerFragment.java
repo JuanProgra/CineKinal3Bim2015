@@ -38,8 +38,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     private int ICONS[] = {R.drawable.ic_home, R.drawable.ic_events, R.drawable.ic_mail, R.mipmap.ic_profile };
     private String TITLES[] = {"Peliculas", "Favoritos","Ajustes", "Perfil"};
-    private String NAME = "Angel Chanquin";
-    private String EMAIL = "angelchanquin@kinal.org.gt";
+    private String NAME = "Yo";
+    private String EMAIL = "yo@kinal.org.gt";
     private int PROFILE = R.mipmap.ic_profile;
 
     public NavigationDrawerFragment() {
