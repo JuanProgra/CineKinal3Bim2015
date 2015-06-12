@@ -24,19 +24,21 @@
             <TextView
                 android:id="@+id/txtTitulo"
                 android:textColor="@color/primary_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
+                android:ems="15"
                 android:layout_below="@id/app_bar"
-                android:text="" />
+                android:text=""
+                android:layout_gravity="center_horizontal" />
 
             <TextView
                 android:id="@+id/txtDescrip"
                 android:textColor="@color/secondary_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:text="" />
+                android:ems="15"
+                android:text=""
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
 
 
