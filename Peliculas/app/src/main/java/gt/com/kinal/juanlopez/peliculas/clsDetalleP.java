@@ -65,6 +65,7 @@ public class clsDetalleP extends ActionBarActivity {
                 textDescrip.setText(cc.getString(1));
             } while (cc.moveToNext());
         }
+        db.close();
     }
 
 
@@ -87,7 +88,7 @@ public class clsDetalleP extends ActionBarActivity {
             return true;
         }
         if (id == R.id.home){
-            NavUtils.navigateUpFromSameTask(this);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

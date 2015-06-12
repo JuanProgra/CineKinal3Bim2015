@@ -14,7 +14,7 @@ public class BDD_sqlite extends SQLiteOpenHelper {
 
     public BDD_sqlite(Context ctx)
     {
-        super(ctx, "Peliculas", factory, 5);
+        super(ctx, "Peliculas", factory, 6);
     }
 
     @Override

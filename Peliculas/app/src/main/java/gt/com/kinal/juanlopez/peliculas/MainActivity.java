@@ -84,28 +84,11 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //lista = (ListView) findViewById(R.id.listView);
-        //lista1 = (ListView) findViewById(R.id.listView2);
-        llenarPeliculas();
 
         user = "";
         setupDrawer();
         Login();
-        //
-        //llenarLista2();
-
-        //fab();
     }
-
-    public void fab() {
-        ImageView imageView = new ImageView(this);
-        imageView.setImageResource(R.drawable.ic_content_new);
-
-        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
-                .setContentView(imageView)
-                .build();
-    }
-
 
     private void setupDrawer() {
         re = getResources();
@@ -150,61 +133,6 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         lista1.setAdapter(adapter2);
         //adapter.notifyDataSetChanged();
     }
-
-    public void llenarPeliculas() {
-        try {
-            sqlite = new BDD_sqlite(getBaseContext());
-            db = sqlite.getReadableDatabase();
-
-            ContentValues peliculaConte = new ContentValues();
-
-            String sql1 = "DELETE FROM PELICULA";
-            db.execSQL(sql1);
-            db.close();
-
-            db = sqlite.getReadableDatabase();
-
-            peliculaConte.put("TITULO", "Los Vengadores");
-            peliculaConte.put("DESCRIPCION", "Cuando Tony Stark intenta reactivar un programa sin uso que tiene como objetivo de mantener la paz, las cosas comienzan a torcerse y los héroes más poderosos de la Tierra, incluyendo a Iron Man, Capitán América, Thor, El Increíble Hulk, Viuda Negra y Ojo de Halcón, se verán ante su prueba definitiva cuando el destino del planeta se ponga en juego. Cuando el villano Ultron emerge, le corresponderá a Los Vengadores detener sus terribles planes, que junto a incómodas alianzas llevarán a una inesperada acción que allanará el camino para una épica y única aventura.");
-            peliculaConte.put("ESTADO", "1");
-
-            db.insert("PELICULA", null, peliculaConte);
-            db.close();
-
-            db = sqlite.getReadableDatabase();
-
-            peliculaConte.put("TITULO", "Clown: El Payaso del mal");
-            peliculaConte.put("DESCRIPCION", "Un padre decide compra un traje de payaso para animar a su hijo en su sexto cumpleaños. Tras la fiesta se da cuenta de que es incapaz de quitárselo y su personalidad comienza a sufrir terroríficos cambios. Él y su familia deberán intentar quitárselo en una carrera contra el tiempo para terminar con la maldición, antes de que se complete la transformación y se convierta en un homicida con zapatos muy grandes.");
-            peliculaConte.put("ESTADO", "1");
-
-            db.insert("PELICULA", null, peliculaConte);
-            db.close();
-
-            db = sqlite.getReadableDatabase();
-
-            peliculaConte.put("TITULO", "Tomorrowland: El Mundo del mañana");
-            peliculaConte.put("DESCRIPCION", "Unidos por el mismo destino, un adolescente inteligente y optimista lleno de curiosidad científica y un antiguo niño prodigio inventor hastiado por las desilusiones se embarcan en una peligrosa misión para desenterrar los secretos de un enigmático lugar localizado en algún lugar del tiempo y el espacio conocido en la memoria colectiva como “Tomorrowland”");
-            peliculaConte.put("ESTADO", "1");
-
-            db.insert("PELICULA", null, peliculaConte);
-            db.close();
-
-            db = sqlite.getReadableDatabase();
-
-            peliculaConte.put("TITULO", "Heroe de Centro Comercial 2");
-            peliculaConte.put("DESCRIPCION", "Kevin James vuelve a interpretar a Paul Blart, el guardia de seguridad que en esta ocasión se dirige a Las Vegas para atender una Exposición sobre su ramo de trabajo y aprovechará para llevarse a su hija Maya (Raini Rodriguez) para pasar tiempo juntos antes de que ella se vaya a estudiar fuera. Mientras está en la convención, Paul sin darse cuenta descubre que se lleva a cabo un atraco, así que como buen héroe, deberá detener a los criminales.");
-            peliculaConte.put("ESTADO", "1");
-
-            db.insert("PELICULA", null, peliculaConte);
-            db.close();
-        } catch (SQLException e) {
-            db.close();
-            String message = e.toString();
-            Toast.makeText(this, "0)" + message, Toast.LENGTH_LONG).show();
-        }
-
-    }
-
     public void Login() {
 
         sqlite = new BDD_sqlite(getBaseContext());

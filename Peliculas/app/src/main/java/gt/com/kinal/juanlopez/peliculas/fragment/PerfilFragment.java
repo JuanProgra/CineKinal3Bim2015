@@ -1,6 +1,7 @@
 package gt.com.kinal.juanlopez.peliculas.fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import gt.com.kinal.juanlopez.peliculas.BaseDatos.BDD_sqlite;
 import gt.com.kinal.juanlopez.peliculas.R;
@@ -43,13 +45,12 @@ public class PerfilFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
         // Inflate the layout for this fragment
-        editTextUsuario = (EditText)view.findViewById(R.id.edtUsuarioPer);
-        editTextCorreo = (EditText)view.findViewById(R.id.edtCorreoPer);
-        editTextPassAnt = (EditText)view.findViewById(R.id.edtPasswordAntPer);
-        editTextPassNew = (EditText)view.findViewById(R.id.edtPasswordNewPer);
-        editTextPass = (EditText)view.findViewById(R.id.edtPasswordPer);
+        editTextUsuario = (EditText) view.findViewById(R.id.edtUsuarioPer);
+        editTextCorreo = (EditText) view.findViewById(R.id.edtCorreoPer);
+        editTextPassNew = (EditText) view.findViewById(R.id.edtPasswordNewPer);
+        editTextPass = (EditText) view.findViewById(R.id.edtPasswordPer);
 
-        buttonEdit = (Button)view.findViewById(R.id.btnModifPer);
+        buttonEdit = (Button) view.findViewById(R.id.btnModifPer);
 
         Login();
 
@@ -62,6 +63,7 @@ public class PerfilFragment extends Fragment {
 
         return view;
     }
+
     public void Login() {
         sqlite = new BDD_sqlite(getActivity().getBaseContext());
         db = sqlite.getReadableDatabase();
@@ -80,14 +82,111 @@ public class PerfilFragment extends Fragment {
             } while (cc.moveToNext());
         }
         db.close();
-        if (valida > 0 ){
+        if (valida > 0) {
             editTextUsuario.setText(NAME);
             editTextCorreo.setText(EMAIL);
             editTextPass.setText(PASSWORD);
         }
     }
-    public void Editar(){
 
+    public void Editar() {
+        if (editTextUsuario.getText().length() > 0) {
+            if (editTextCorreo.getText().length() > 0) {
+                if (editTextPassNew.getText().length() > 0){
+                    dialogoConfirmarPas();
+                }else{
+                    dialogoConfirmar();
+                }
+            } else {
+                Toast.makeText(getActivity(), "Debe de ingresar al correo", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getActivity(), "Debe de ingrear su usuario", Toast.LENGTH_SHORT).show();
+        }
     }
 
+    public void dialogoConfirmar() {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.dialog);
+        dialog.setTitle("Cambio de datos");
+
+        final EditText edtPassword = (EditText) dialog.findViewById(R.id.edtPassword);
+        Button btnCancelar = (Button) dialog.findViewById(R.id.btnCancelar);
+        Button btnAceptar = (Button) dialog.findViewById(R.id.btnAceptar);
+
+        dialog.show();
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (edtPassword.getText().length() > 0) {
+                    if (edtPassword.getText().toString().equals(PASSWORD)) {
+
+                        sqlite = new BDD_sqlite(getActivity().getBaseContext());
+                        db = sqlite.getReadableDatabase();
+                        String sql1 = "UPDATE USUARIOS SET NOMBRE='" + editTextUsuario.getText().toString() +
+                                "',CORREO='" + editTextCorreo.getText().toString() +"'";
+                        db.execSQL(sql1);
+                        db.close();
+
+                        dialog.dismiss();
+                    }else{
+                        Toast.makeText(getActivity(), "La contraseña no es correcta", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Debe de ingrear su usuario ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    public void dialogoConfirmarPas() {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.dialog);
+        dialog.setTitle("Cambio de datos");
+
+        final EditText edtPassword = (EditText) dialog.findViewById(R.id.edtPassword);
+        Button btnCancelar = (Button) dialog.findViewById(R.id.btnCancelar);
+        Button btnAceptar = (Button) dialog.findViewById(R.id.btnAceptar);
+
+        dialog.show();
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (edtPassword.getText().length() > 0) {
+                    if (edtPassword.getText().toString().equals(PASSWORD)) {
+
+                        sqlite = new BDD_sqlite(getActivity().getBaseContext());
+                        db = sqlite.getReadableDatabase();
+                        String sql1 = "UPDATE USUARIOS SET NOMBRE='" + editTextUsuario.getText().toString() +
+                                "',CORREO='" + editTextCorreo.getText().toString() + "',PASSWORD='" + editTextPassNew.getText().toString() +"'";
+                        db.execSQL(sql1);
+                        db.close();
+
+                        dialog.dismiss();
+                    }else{
+                        Toast.makeText(getActivity(), "La contraseña no es correcta", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Debe de ingrear su usuario ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 }

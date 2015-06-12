@@ -12,6 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -23,6 +25,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,6 +88,7 @@ public class PeliculaFragment extends Fragment {
 
             } while (cc.moveToNext());
         }
+        db.close();
         adapter = new PeliculasAdapter();
         lista.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -174,7 +178,6 @@ public class PeliculaFragment extends Fragment {
     }
 
     public void Aler(String titulo) {
-
         final String ti = titulo;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -200,11 +203,13 @@ public class PeliculaFragment extends Fragment {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 Intent iMod = new Intent(getActivity(), clsDetalleP.class);
                 iMod.putExtra("titulo", ti);
                 startActivity(iMod);
             }
         });
+
         builder.show();
     }
 

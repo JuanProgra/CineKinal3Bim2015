@@ -158,7 +158,7 @@ public class clsLogin extends ActionBarActivity {
                         db = sqlite.getReadableDatabase();
                         try {
                             String sql1 = "UPDATE USUARIOS SET ESTADO='1',ESTADOLOG='"+estado+"' WHERE USUARIO='" + edtUser.getText().toString() + "'";
-                            Toast.makeText(this, sql1, Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, sql1, Toast.LENGTH_SHORT).show();
                             db.execSQL(sql1);
                             db.close();
 
@@ -168,19 +168,21 @@ public class clsLogin extends ActionBarActivity {
                         } catch (SQLException e) {
                             db.close();
                             String message = e.toString();
-                            Toast.makeText(this, "0)" + message, Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "0)" + message, Toast.LENGTH_SHORT).show();
                         }
 
                     } else {
                         Toast toast = Toast.makeText(getApplicationContext(), "La contraseña no se valida", Toast.LENGTH_SHORT);
                         toast.show();
                     }
+                }else{
+                    Toast.makeText(this, "Usuario no registrado verificar credenciales", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "Ingrese su contraseña", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Ingrese su contraseña", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(this, "Ingrese su nombre de usuario", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Ingrese su nombre de usuario", Toast.LENGTH_SHORT).show();
         }
     }
 }

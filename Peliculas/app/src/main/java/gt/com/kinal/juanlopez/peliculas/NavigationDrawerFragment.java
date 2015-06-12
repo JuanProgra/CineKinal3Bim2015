@@ -36,7 +36,7 @@ public class NavigationDrawerFragment extends Fragment {
     private FragmentDrawerListener mDrawerListener;
     private View containerView;
 
-    private int ICONS[] = {R.drawable.ic_home, R.drawable.ic_events, R.drawable.ic_mail, R.mipmap.ic_profile };
+    private int ICONS[] = {R.drawable.ic_home, R.drawable.ic_events, R.drawable.ic_mail, R.drawable.ic_travel };
     private String TITLES[] = {"Peliculas", "Favoritos","Ajustes", "Perfil"};
     private String NAME = "Yo";
     private String EMAIL = "yo@kinal.org.gt";
@@ -55,13 +55,13 @@ public class NavigationDrawerFragment extends Fragment {
         cx = getActivity().getApplicationContext();
 
         Login();
-
         mRecyclerView = (RecyclerView) v.findViewById(R.id.RecyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new NavigationDrawerAdapter(TITLES, ICONS, NAME, EMAIL, PROFILE);
         mRecyclerView.setAdapter(mAdapter);
+
 
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -72,6 +72,9 @@ public class NavigationDrawerFragment extends Fragment {
         }));
 
         return v;
+    }
+    public void datos(){
+        mRecyclerView.setAdapter(mAdapter);
     }
 
 
